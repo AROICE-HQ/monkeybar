@@ -1,0 +1,11 @@
+blank_issues_enabled: false
+contact_links:
+  - name: 💬 GitHub Discussions
+    url: https://github.com/aroice-hq/monkeybar/discussions
+    about: Ask questions and discuss with the community
+  - name: 🌐 GNOME Extensions Page
+    url: https://monkeybar.aroice.in/
+    about: Leave a review or see installation instructions
+  - name: 📖 Developer's Website
+    url: https://aryantechie.com/
+    about: Learn more about the developer and other projects

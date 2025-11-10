@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schemalist>
+  <enum id="org.gnome.shell.extensions.monkeybar.theme-name">
+    <value value="0" nick="standard"/>
+    <value value="1" nick="githubDark"/>
+    <value value="2" nick="halloween"/>
+    <value value="3" nick="teal"/>
+    <value value="4" nick="leftPad"/>
+    <value value="5" nick="dracula"/>
+    <value value="6" nick="blue"/>
+    <value value="7" nick="panda"/>
+    <value value="8" nick="sunny"/>
+    <value value="9" nick="pink"/>
+    <value value="10" nick="solarizedDark"/>
+    <value value="11" nick="solarizedLight"/>
+  </enum>
+
+  <enum id="org.gnome.shell.extensions.monkeybar.color-mode">
+    <value value="0" nick="opacity"/>
+    <value value="1" nick="grade"/>
+  </enum>
+
+  <enum id="org.gnome.shell.extensions.monkeybar.panel-position">
+    <value value="0" nick="left"/>
+    <value value="1" nick="center"/>
+    <value value="2" nick="right"/>
+  </enum>
+
+  <enum id="org.gnome.shell.extensions.monkeybar.week-start-day">
+    <value value="0" nick="sunday"/>
+    <value value="1" nick="monday"/>
+    <value value="2" nick="tuesday"/>
+    <value value="3" nick="wednesday"/>
+    <value value="4" nick="thursday"/>
+    <value value="5" nick="friday"/>
+    <value value="6" nick="saturday"/>
+  </enum>
+
+  <schema id="org.gnome.shell.extensions.monkeybar" path="/org/gnome/shell/extensions/monkeybar/">
+    <key name="monkeytype-username" type="s">
+      <default>''</default>
+      <summary>Monkeytype Username</summary>
+      <description>Your Monkeytype username to fetch typing activity data.</description>
+    </key>
+    <key name="monkeytype-apekey" type="s">
+      <default>''</default>
+      <summary>Monkeytype ApeKey</summary>
+      <description>Your Monkeytype ApeKey for API authentication.</description>
+    </key>
+    <key name="refresh-interval" type="i">
+      <default>21600</default>
+      <summary>Refresh Interval</summary>
+      <description>Time in seconds between refreshing Monkeytype typing activity data.</description>
+    </key>
+    <key name="panel-position" enum="org.gnome.shell.extensions.monkeybar.panel-position">
+      <default>'right'</default>
+      <summary>Panel Position</summary>
+      <description>The position of the extension indicator in the panel.</description>
+    </key>
+    <key name="panel-index" type="i">
+      <default>0</default>
+      <summary>Position Index</summary>
+      <description>The index position within the chosen panel section.</description>
+    </key>
+    <key name="show-current-week-only" type="b">
+      <default>false</default>
+      <summary>Show Current Week's Tests Only</summary>
+      <description>Whether to show only tests from the current week instead of the last 7 days.</description>
+    </key>
+    <key name="week-start-day" enum="org.gnome.shell.extensions.monkeybar.week-start-day">
+      <default>'monday'</default>
+      <summary>Week Start Day</summary>
+      <description>The day of the week on which the week starts.</description>
+    </key>
+    <key name="highlight-current-day" type="b">
+      <default>false</default>
+      <summary>Highlight Current Day</summary>
+      <description>Adds a white border around the current day's box for easier identification.</description>
+    </key>
+    <key name="theme-name" enum="org.gnome.shell.extensions.monkeybar.theme-name">
+      <default>'standard'</default>
+      <summary>Color Theme</summary>
+      <description>The color theme to use for displaying typing activity.</description>
+    </key>
+    <key name="color-mode" enum="org.gnome.shell.extensions.monkeybar.color-mode">
+      <default>'opacity'</default>
+      <summary>Color Mode</summary>
+      <description>Whether to use opacity-based or grade-based coloring for typing activity.</description>
+    </key>
+    <key name="days-to-show" type="i">
+      <default>7</default>
+      <range min="1" max="7"/>
+      <summary>Days to Show</summary>
+      <description>Number of days to display in the top bar (1-7).</description>
+    </key>
+    <key name="right-click-action" type="s">
+      <default>'homepage'</default>
+      <summary>Right Click Action</summary>
+      <description>What to open when right-clicking the extension (profile or homepage).</description>
+    </key>
+  </schema>
+</schemalist>
