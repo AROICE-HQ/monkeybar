@@ -28,7 +28,7 @@ export default class About extends Adw.PreferencesPage {
         const githubLink = 'https://github.com/AROICE-HQ/monkeybar';
         const issueLink = 'https://github.com/AROICE-HQ/monkeybar/issues';
         const sponsorsLink = 'https://github.com/sponsors/aryan-techie';
-        const gnomeExtensionsLink = 'https://extensions.gnome.org/extension/XXXX/monkeybar/';
+        const gnomeExtensionsLink = 'https://extensions.gnome.org/extension/8831/monkeybar/';
 
         // Header Section
         const headerGroup = new Adw.PreferencesGroup();

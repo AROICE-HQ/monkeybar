@@ -10,7 +10,7 @@
 *Track your typing activity with elegant visual feedback right in your top bar*
 
 [![License](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
-[![GNOME Shell](https://img.shields.io/badge/GNOME%20Shell-46%20|%2047%20|%2048-4A86CF?logo=gnome)](https://extensions.gnome.org/)
+[![GNOME Shell](https://img.shields.io/badge/GNOME%20Shell-46%20|%2047%20|%2048-4A86CF?logo=gnome)](https://extensions.gnome.org/extension/8831/monkeybar/)
 [![GitHub Stars](https://img.shields.io/github/stars/AROICE-HQ/monkeybar?style=social)](https://github.com/AROICE-HQ/monkeybar)
 
 [Features](#-features) • [Installation](#-installation) • [Configuration](#️-configuration) • [Themes](#-themes) • [Contributing](#-contributing)
@@ -63,12 +63,11 @@ Distinct color levels based on test count thresholds
 
 ## 🚀 Installation
 
-### Method 1: GNOME Extensions Website (Coming Soon)
+### Method 1: GNOME Extensions Website
 
-1. Visit the [GNOME Extensions page](https://extensions.gnome.org/)
-2. Search for "MonkeyBar"
-3. Click the toggle to install
-4. Configure your Monkeytype credentials
+1. Visit the [MonkeyBar extension page](https://extensions.gnome.org/extension/8831/monkeybar/)
+2. Click the toggle to install
+3. Configure your Monkeytype credentials
 
 ### Method 2: Manual Installation
 
