@@ -6,7 +6,7 @@ import About from './helpers/about.js';
 
 export default class MonkeytypeStreakPreferences extends ExtensionPreferences {
     fillPreferencesWindow(window) {
-        const settings = this.getSettings('org.gnome.shell.extensions.monkeybar');
+        const settings = this.getSettings();
 
         // ==================== Settings Page ====================
         const settingsPage = new Adw.PreferencesPage();

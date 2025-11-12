@@ -96,6 +96,7 @@ export async function fetchTypingActivity(username, apeKey, showCurrentWeekOnly 
             responseBytes = await session.send_and_read_async(message, GLib.PRIORITY_DEFAULT, null);
         } catch (e) {
             console.error(`Monkeytype Streak Extension: Network error - ${e.message}`);
+            session.abort();
             throw e;
         }
 
@@ -130,6 +131,7 @@ export async function fetchTypingActivity(username, apeKey, showCurrentWeekOnly 
             activityResponseBytes = await session.send_and_read_async(activityMessage, GLib.PRIORITY_DEFAULT, null);
         } catch (e) {
             console.error(`Monkeytype Streak Extension: Network error fetching activity - ${e.message}`);
+            session.abort();
             throw e;
         }
 
@@ -170,6 +172,7 @@ async function fetchPublicStreak(username) {
             responseBytes = await session.send_and_read_async(message, GLib.PRIORITY_DEFAULT, null);
         } catch (e) {
             console.error(`Monkeytype Streak Extension: Network error - ${e.message}`);
+            session.abort();
             throw e;
         }
 
