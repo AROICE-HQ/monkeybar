@@ -15,7 +15,7 @@
 
 [Features](#-features) • [Installation](#-installation) • [Configuration](#️-configuration) • [Themes](#-themes) • [Contributing](#-contributing)
 
-![MonkeyBar Preview](https://private-user-images.githubusercontent.com/76107940/513720646-435bc2a7-f465-4918-b9c1-7728e7aaa663.jpg?jwt=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3NjMwMTc5NDcsIm5iZiI6MTc2MzAxNzY0NywicGF0aCI6Ii83NjEwNzk0MC81MTM3MjA2NDYtNDM1YmMyYTctZjQ2NS00OTE4LWI5YzEtNzcyOGU3YWFhNjYzLmpwZz9YLUFtei1BbGdvcml0aG09QVdTNC1ITUFDLVNIQTI1NiZYLUFtei1DcmVkZW50aWFsPUFLSUFWQ09EWUxTQTUzUFFLNFpBJTJGMjAyNTExMTMlMkZ1cy1lYXN0LTElMkZzMyUyRmF3czRfcmVxdWVzdCZYLUFtei1EYXRlPTIwMjUxMTEzVDA3MDcyN1omWC1BbXotRXhwaXJlcz0zMDAmWC1BbXotU2lnbmF0dXJlPWUyMThjNDI0NWY3NDQyNzcyOTE0NWMyZmE1NDc1ZGEyYWVjZTQ5MGQ5N2M1ZjFlYTg2NzdjYTk0OGY4YmZmMWUmWC1BbXotU2lnbmVkSGVhZGVycz1ob3N0In0.lz98u8Z7ylcETKyva0uyvxR-E-Yvry5FnUjOTotnDY4)
+![MonkeyBar Preview](screenshot.jpg)
 
 </div>
 
