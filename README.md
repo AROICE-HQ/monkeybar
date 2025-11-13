@@ -15,7 +15,7 @@
 
 [Features](#-features) • [Installation](#-installation) • [Configuration](#️-configuration) • [Themes](#-themes) • [Contributing](#-contributing)
 
-![MonkeyBar Preview](screenshot.jpg)
+![MonkeyBar Preview](https://raw.githubusercontent.com/AROICE-HQ/monkeybar/5aaa5e720dadc160e747eb4fde905f17c5c2b6ee/images/version-1.jpg)
 
 </div>
 
