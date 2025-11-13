@@ -10,7 +10,7 @@
 *Track your typing activity with elegant visual feedback right in your top bar*
 
 [![License](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
-[![GNOME Shell](https://img.shields.io/badge/GNOME%20Shell-46%20|%2047%20|%2048-4A86CF?logo=gnome)](https://extensions.gnome.org/extension/8831/monkeybar/)
+[![GNOME Shell](https://img.shields.io/badge/GNOME%20Shell-46%20|%2047%20|%2048%20|%2049-4A86CF?logo=gnome)](https://extensions.gnome.org/extension/8831/monkeybar/)
 [![GitHub Stars](https://img.shields.io/github/stars/AROICE-HQ/monkeybar?style=social)](https://github.com/AROICE-HQ/monkeybar)
 
 [Features](#-features) • [Installation](#-installation) • [Configuration](#️-configuration) • [Themes](#-themes) • [Contributing](#-contributing)
@@ -94,7 +94,7 @@ gnome-extensions enable monkeybar@aroice.in
 
 ### System Requirements
 
-- **GNOME Shell**: 46, 47, or 48
+- **GNOME Shell**: 46, 47, 48, or 49
 - **Internet Connection**: Required for Monkeytype API access
 - **Monkeytype Account**: Free account at [monkeytype.com](https://monkeytype.com)
 
