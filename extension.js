@@ -3,6 +3,7 @@ import St from 'gi://St';
 import GLib from 'gi://GLib';
 import Clutter from 'gi://Clutter';
 import Gio from 'gi://Gio';
+import Soup from 'gi://Soup';
 
 import { Extension, gettext as _ } from 'resource:///org/gnome/shell/extensions/extension.js';
 import * as PanelMenu from 'resource:///org/gnome/shell/ui/panelMenu.js';
@@ -185,6 +186,7 @@ const Indicator = GObject.registerClass(
             this._refreshTimeoutId = null;
             this._testSection = null;
             this._separator = null;
+            this._soupSession = new Soup.Session();
 
             this._buildUI();
             this._setupMenuItems();
@@ -471,7 +473,7 @@ const Indicator = GObject.registerClass(
                 }
 
                 // Fetch typing activity data from Monkeytype API
-                const result = await fetchTypingActivity(username, apeKey, showCurrentWeekOnly, weekStartDay, daysToShow);
+                const result = await fetchTypingActivity(this._soupSession, username, apeKey, showCurrentWeekOnly, weekStartDay, daysToShow);
 
                 // Double-check boxes still exist (user might have disabled extension)
                 if (!this._boxes || !this._boxes.length) {
@@ -722,6 +724,11 @@ const Indicator = GObject.registerClass(
             if (this._daysChangedId) {
                 this._preferences._settings.disconnect(this._daysChangedId);
                 this._daysChangedId = null;
+            }
+
+            if (this._soupSession) {
+                this._soupSession.abort();
+                this._soupSession = null;
             }
 
             this._clearTestInfoItems();

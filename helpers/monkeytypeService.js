@@ -56,6 +56,7 @@ export function getDates(asISOString = true, showCurrentWeekOnly = false, weekSt
 
 /**
  * Fetch typing activity from Monkeytype API
+ * @param {Soup.Session} session - Soup session for HTTP requests
  * @param {string} username - Monkeytype username
  * @param {string} apeKey - Monkeytype ApeKey for authentication (optional)
  * @param {boolean} showCurrentWeekOnly - Whether to show current week only
@@ -63,7 +64,7 @@ export function getDates(asISOString = true, showCurrentWeekOnly = false, weekSt
  * @param {number} daysToShow - Number of days to show (1-7)
  * @returns {Promise<number[]|Object>} Array of test counts for each day, or object with streak info
  */
-export async function fetchTypingActivity(username, apeKey, showCurrentWeekOnly = false, weekStartDay = 1, daysToShow = 7) {
+export async function fetchTypingActivity(session, username, apeKey, showCurrentWeekOnly = false, weekStartDay = 1, daysToShow = 7) {
     if (!username || username === 'YOUR_MONKEYTYPE_USERNAME') {
         console.error('Monkeytype Streak Extension: Monkeytype username is not configured.');
         return Array(daysToShow).fill(0);
@@ -74,14 +75,13 @@ export async function fetchTypingActivity(username, apeKey, showCurrentWeekOnly 
     // If no ApeKey, fall back to public profile for streak data
     if (!apeKey || apeKey === 'YOUR_MONKEYTYPE_APE_KEY' || apeKey.trim() === '') {
         console.log('Monkeytype Streak Extension: No ApeKey provided, fetching public streak data...');
-        return await fetchPublicStreak(username);
+        return await fetchPublicStreak(session, username);
     }
 
     const targetDates = getDates(true, showCurrentWeekOnly, weekStartDay, daysToShow);
 
     try {
         // First, try to get the user's profile which includes testActivity
-        const session = new Soup.Session();
         const message = Soup.Message.new('GET', `https://api.monkeytype.com/users/${username}/profile`);
         
         if (!message) {
@@ -96,7 +96,6 @@ export async function fetchTypingActivity(username, apeKey, showCurrentWeekOnly 
             responseBytes = await session.send_and_read_async(message, GLib.PRIORITY_DEFAULT, null);
         } catch (e) {
             console.error(`Monkeytype Streak Extension: Network error - ${e.message}`);
-            session.abort();
             throw e;
         }
 
@@ -131,7 +130,6 @@ export async function fetchTypingActivity(username, apeKey, showCurrentWeekOnly 
             activityResponseBytes = await session.send_and_read_async(activityMessage, GLib.PRIORITY_DEFAULT, null);
         } catch (e) {
             console.error(`Monkeytype Streak Extension: Network error fetching activity - ${e.message}`);
-            session.abort();
             throw e;
         }
 
@@ -153,12 +151,12 @@ export async function fetchTypingActivity(username, apeKey, showCurrentWeekOnly 
 
 /**
  * Fetch public streak data from Monkeytype API (no authentication required)
+ * @param {Soup.Session} session - Soup session for HTTP requests
  * @param {string} username - Monkeytype username
  * @returns {Promise<Object>} Object with streak and maxStreak
  */
-async function fetchPublicStreak(username) {
+async function fetchPublicStreak(session, username) {
     try {
-        const session = new Soup.Session();
         const message = Soup.Message.new('GET', `https://api.monkeytype.com/users/${username}/profile`);
         
         if (!message) {
@@ -172,7 +170,6 @@ async function fetchPublicStreak(username) {
             responseBytes = await session.send_and_read_async(message, GLib.PRIORITY_DEFAULT, null);
         } catch (e) {
             console.error(`Monkeytype Streak Extension: Network error - ${e.message}`);
-            session.abort();
             throw e;
         }
 
