@@ -98,5 +98,20 @@
       <summary>Right Click Action</summary>
       <description>What to open when right-clicking the extension (profile or homepage).</description>
     </key>
+    <key name="shortcut-refresh" type="as">
+      <default>['&lt;Super&gt;&lt;Shift&gt;r']</default>
+      <summary>Shortcut to Refresh Now</summary>
+      <description>Keyboard shortcut to refresh typing activity data.</description>
+    </key>
+    <key name="shortcut-open-monkeytype" type="as">
+      <default>['&lt;Super&gt;&lt;Shift&gt;m']</default>
+      <summary>Shortcut to Open Monkeytype</summary>
+      <description>Keyboard shortcut to open Monkeytype homepage or profile.</description>
+    </key>
+    <key name="shortcut-open-profile" type="as">
+      <default>['&lt;Super&gt;&lt;Shift&gt;p']</default>
+      <summary>Shortcut to Open User Profile</summary>
+      <description>Keyboard shortcut to open user profile on Monkeytype.</description>
+    </key>
   </schema>
 </schemalist>

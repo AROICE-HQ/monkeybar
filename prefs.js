@@ -1,5 +1,7 @@
 import Adw from 'gi://Adw';
 import Gtk from 'gi://Gtk';
+import Gdk from 'gi://Gdk';
+import GLib from 'gi://GLib';
 
 import { ExtensionPreferences, gettext as _ } from 'resource:///org/gnome/Shell/Extensions/js/extensions/prefs.js';
 import About from './helpers/about.js';
@@ -151,6 +153,55 @@ export default class MonkeytypeStreakPreferences extends ExtensionPreferences {
 
         interactionGroup.add(rightClickActionRow);
         settingsPage.add(interactionGroup);
+
+        // Keyboard Shortcuts Group
+        const shortcutsGroup = new Adw.PreferencesGroup();
+        shortcutsGroup.set_title(_('Keyboard Shortcuts'));
+        shortcutsGroup.set_description(_('Configure custom keyboard shortcuts for quick actions'));
+
+        // Refresh shortcut
+        const refreshShortcutRow = new Adw.ActionRow({
+            title: _('Refresh Now'),
+            subtitle: _('Shortcut to refresh typing activity')
+        });
+        const refreshShortcutButton = this._createShortcutButton(
+            settings,
+            'shortcut-refresh',
+            _('Set Shortcut')
+        );
+        refreshShortcutRow.add_suffix(refreshShortcutButton);
+        refreshShortcutRow.activatable_widget = refreshShortcutButton;
+        shortcutsGroup.add(refreshShortcutRow);
+
+        // Open Monkeytype shortcut
+        const openMonkeytypeShortcutRow = new Adw.ActionRow({
+            title: _('Open Monkeytype'),
+            subtitle: _('Shortcut to open Monkeytype (homepage or profile)')
+        });
+        const openMonkeytypeShortcutButton = this._createShortcutButton(
+            settings,
+            'shortcut-open-monkeytype',
+            _('Set Shortcut')
+        );
+        openMonkeytypeShortcutRow.add_suffix(openMonkeytypeShortcutButton);
+        openMonkeytypeShortcutRow.activatable_widget = openMonkeytypeShortcutButton;
+        shortcutsGroup.add(openMonkeytypeShortcutRow);
+
+        // Open User Profile shortcut
+        const openProfileShortcutRow = new Adw.ActionRow({
+            title: _('Open User Profile'),
+            subtitle: _('Shortcut to open your Monkeytype profile')
+        });
+        const openProfileShortcutButton = this._createShortcutButton(
+            settings,
+            'shortcut-open-profile',
+            _('Set Shortcut')
+        );
+        openProfileShortcutRow.add_suffix(openProfileShortcutButton);
+        openProfileShortcutRow.activatable_widget = openProfileShortcutButton;
+        shortcutsGroup.add(openProfileShortcutRow);
+
+        settingsPage.add(shortcutsGroup);
 
         // Info Group (Bottom)
         const settingsSpacer = new Adw.PreferencesGroup();
@@ -324,5 +375,123 @@ export default class MonkeytypeStreakPreferences extends ExtensionPreferences {
         
         window.set_title(_('MonkeyBar'));
         window.set_default_size(650, 750);
+    }
+
+    _createShortcutButton(settings, key, label) {
+        const button = new Gtk.Button({
+            has_frame: true,
+            valign: Gtk.Align.CENTER,
+        });
+
+        const updateButtonLabel = () => {
+            const shortcut = settings.get_strv(key);
+            if (shortcut && shortcut.length > 0 && shortcut[0]) {
+                button.label = this._formatShortcut(shortcut[0]);
+            } else {
+                button.label = label;
+            }
+        };
+
+        updateButtonLabel();
+
+        button.connect('clicked', () => {
+            const dialog = new Gtk.Dialog({
+                title: _('Set Keyboard Shortcut'),
+                modal: true,
+                transient_for: button.get_root(),
+            });
+
+            dialog.add_button(_('Cancel'), Gtk.ResponseType.CANCEL);
+            const clearButton = dialog.add_button(_('Clear'), Gtk.ResponseType.REJECT);
+            clearButton.get_style_context().add_class('destructive-action');
+
+            const contentArea = dialog.get_content_area();
+            contentArea.set_margin_top(12);
+            contentArea.set_margin_bottom(12);
+            contentArea.set_margin_start(12);
+            contentArea.set_margin_end(12);
+
+            const instructionLabel = new Gtk.Label({
+                label: _('Press any key combination...'),
+                wrap: true,
+                justify: Gtk.Justification.CENTER,
+            });
+            contentArea.append(instructionLabel);
+
+            const shortcutLabel = new Gtk.Label({
+                label: '',
+                wrap: true,
+                justify: Gtk.Justification.CENTER,
+                margin_top: 12,
+            });
+            shortcutLabel.get_style_context().add_class('title-2');
+            contentArea.append(shortcutLabel);
+
+            let capturedShortcut = null;
+
+            const eventController = new Gtk.EventControllerKey();
+            eventController.connect('key-pressed', (controller, keyval, keycode, state) => {
+                const mask = state & Gtk.accelerator_get_default_mod_mask();
+                
+                // Ignore modifier-only presses
+                if (keyval === Gdk.KEY_Control_L || keyval === Gdk.KEY_Control_R ||
+                    keyval === Gdk.KEY_Shift_L || keyval === Gdk.KEY_Shift_R ||
+                    keyval === Gdk.KEY_Alt_L || keyval === Gdk.KEY_Alt_R ||
+                    keyval === Gdk.KEY_Super_L || keyval === Gdk.KEY_Super_R) {
+                    return false;
+                }
+
+                // Must have at least one modifier
+                if (mask === 0) {
+                    shortcutLabel.label = _('Please use at least one modifier key (Ctrl, Alt, Super, Shift)');
+                    return true;
+                }
+
+                const shortcut = Gtk.accelerator_name(keyval, mask);
+                capturedShortcut = shortcut;
+                shortcutLabel.label = this._formatShortcut(shortcut);
+
+                // Auto-close dialog after capturing
+                GLib.timeout_add(GLib.PRIORITY_DEFAULT, 500, () => {
+                    dialog.response(Gtk.ResponseType.OK);
+                    return GLib.SOURCE_REMOVE;
+                });
+
+                return true;
+            });
+
+            dialog.add_controller(eventController);
+
+            dialog.connect('response', (dialog, response) => {
+                if (response === Gtk.ResponseType.OK && capturedShortcut) {
+                    settings.set_strv(key, [capturedShortcut]);
+                    updateButtonLabel();
+                } else if (response === Gtk.ResponseType.REJECT) {
+                    settings.set_strv(key, []);
+                    updateButtonLabel();
+                }
+                dialog.close();
+            });
+
+            dialog.present();
+        });
+
+        // Update button when settings change
+        settings.connect(`changed::${key}`, updateButtonLabel);
+
+        return button;
+    }
+
+    _formatShortcut(shortcut) {
+        if (!shortcut) return _('Disabled');
+        
+        return shortcut
+            .replace('<Super>', 'Super+')
+            .replace('<Primary>', 'Ctrl+')
+            .replace('<Control>', 'Ctrl+')
+            .replace('<Shift>', 'Shift+')
+            .replace('<Alt>', 'Alt+')
+            .replace('>', '')
+            .replace('<', '');
     }
 }

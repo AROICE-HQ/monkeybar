@@ -4,6 +4,8 @@ import GLib from 'gi://GLib';
 import Clutter from 'gi://Clutter';
 import Gio from 'gi://Gio';
 import Soup from 'gi://Soup';
+import Meta from 'gi://Meta';
+import Shell from 'gi://Shell';
 
 import { Extension, gettext as _ } from 'resource:///org/gnome/shell/extensions/extension.js';
 import * as PanelMenu from 'resource:///org/gnome/shell/ui/panelMenu.js';
@@ -334,6 +336,30 @@ const Indicator = GObject.registerClass(
             } catch (e) {
                 console.error('Failed to open Monkeytype:', e);
             }
+        }
+
+        _openUserProfile() {
+            try {
+                const username = this._preferences.monkeytypeUsername;
+                
+                if (!username) {
+                    Main.notify(_('MonkeyBar'), _('Please set your Monkeytype username in settings'));
+                    return;
+                }
+                
+                const url = `https://monkeytype.com/profile/${username}`;
+                Gio.AppInfo.launch_default_for_uri(url, null);
+            } catch (e) {
+                console.error('Failed to open user profile:', e);
+            }
+        }
+
+        _refreshNow() {
+            this._clearTestInfoItems();
+            this._updateTypingDisplay().finally(() => {
+                this._refreshMenu();
+                Main.notify(_('MonkeyBar'), _('Typing activity refreshed'));
+            });
         }
 
         _getBoxStyle(bgColor, isEmpty = false) {
@@ -749,8 +775,14 @@ export default class MonkeytypeStreakExtension extends Extension {
         this._positionChangedId = this._preferences._settings.connect('changed', (settings, key) => {
             if (key === 'panel-position' || key === 'panel-index') {
                 this._updateIndicatorPosition();
+            } else if (key.startsWith('shortcut-')) {
+                // Reapply shortcuts when they change
+                this._setupShortcuts();
             }
         });
+
+        // Set up keyboard shortcuts
+        this._setupShortcuts();
 
         // Wait a bit before creating the indicator to ensure GNOME Shell is ready
         // This prevents issues during login/startup
@@ -762,6 +794,77 @@ export default class MonkeytypeStreakExtension extends Extension {
             this._enableTimeoutId = null;
             return GLib.SOURCE_REMOVE; // Don't repeat this timeout
         });
+    }
+
+    _setupShortcuts() {
+        // Remove existing shortcuts first
+        this._removeShortcuts();
+
+        // Get the settings
+        const settings = this._preferences._settings;
+
+        // Set up the three keyboard shortcuts
+        this._shortcutActions = [];
+
+        // Shortcut 1: Refresh Now
+        const refreshShortcut = settings.get_strv('shortcut-refresh');
+        if (refreshShortcut && refreshShortcut.length > 0 && refreshShortcut[0]) {
+            const refreshAction = Main.wm.addKeybinding(
+                'shortcut-refresh',
+                settings,
+                Meta.KeyBindingFlags.NONE,
+                Shell.ActionMode.ALL,
+                () => {
+                    if (this._indicator) {
+                        this._indicator._refreshNow();
+                    }
+                }
+            );
+            this._shortcutActions.push('shortcut-refresh');
+        }
+
+        // Shortcut 2: Open Monkeytype (homepage or profile based on right-click action)
+        const openMonkeytypeShortcut = settings.get_strv('shortcut-open-monkeytype');
+        if (openMonkeytypeShortcut && openMonkeytypeShortcut.length > 0 && openMonkeytypeShortcut[0]) {
+            const openMonkeytypeAction = Main.wm.addKeybinding(
+                'shortcut-open-monkeytype',
+                settings,
+                Meta.KeyBindingFlags.NONE,
+                Shell.ActionMode.ALL,
+                () => {
+                    if (this._indicator) {
+                        this._indicator._openMonkeytype();
+                    }
+                }
+            );
+            this._shortcutActions.push('shortcut-open-monkeytype');
+        }
+
+        // Shortcut 3: Open User Profile
+        const openProfileShortcut = settings.get_strv('shortcut-open-profile');
+        if (openProfileShortcut && openProfileShortcut.length > 0 && openProfileShortcut[0]) {
+            const openProfileAction = Main.wm.addKeybinding(
+                'shortcut-open-profile',
+                settings,
+                Meta.KeyBindingFlags.NONE,
+                Shell.ActionMode.ALL,
+                () => {
+                    if (this._indicator) {
+                        this._indicator._openUserProfile();
+                    }
+                }
+            );
+            this._shortcutActions.push('shortcut-open-profile');
+        }
+    }
+
+    _removeShortcuts() {
+        if (this._shortcutActions) {
+            this._shortcutActions.forEach(action => {
+                Main.wm.removeKeybinding(action);
+            });
+            this._shortcutActions = [];
+        }
     }
 
     _updateIndicatorPosition() {
@@ -789,6 +892,9 @@ export default class MonkeytypeStreakExtension extends Extension {
             GLib.Source.remove(this._enableTimeoutId);
             this._enableTimeoutId = null;
         }
+
+        // Remove keyboard shortcuts
+        this._removeShortcuts();
 
         // Stop listening for settings changes
         if (this._positionChangedId) {

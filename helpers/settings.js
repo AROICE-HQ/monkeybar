@@ -100,6 +100,30 @@ export class ExtensionSettings {
         this._settings.set_string('right-click-action', value);
     }
 
+    get shortcutRefresh() {
+        return this._settings.get_strv('shortcut-refresh');
+    }
+
+    set shortcutRefresh(value) {
+        this._settings.set_strv('shortcut-refresh', value);
+    }
+
+    get shortcutOpenMonkeytype() {
+        return this._settings.get_strv('shortcut-open-monkeytype');
+    }
+
+    set shortcutOpenMonkeytype(value) {
+        this._settings.set_strv('shortcut-open-monkeytype', value);
+    }
+
+    get shortcutOpenProfile() {
+        return this._settings.get_strv('shortcut-open-profile');
+    }
+
+    set shortcutOpenProfile(value) {
+        this._settings.set_strv('shortcut-open-profile', value);
+    }
+
     connectChanged(callback) {
         return this._settings.connect('changed', callback);
     }
