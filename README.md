@@ -25,10 +25,21 @@
 
 **MonkeyBar** transforms your [Monkeytype](https://monkeytype.com) typing activity into a beautiful visual calendar directly in your GNOME Shell top bar. Stay motivated, track your consistency, and celebrate your typing journey—all at a glance!
 
+### 📹 Watch MonkeyBar in Action
+
+<div align="center">
+
+[![MonkeyBar Demo](https://img.youtube.com/vi/UuB4CMYMt84/0.jpg)](https://youtube.com/watch?v=UuB4CMYMt84)
+
+*Click to watch the full demo and tutorial*
+
+</div>
+
 ### Why MonkeyBar?
 
 - 🎨 **Beautiful Visualizations**: 12 stunning color themes to match your desktop aesthetic
 - 📊 **Activity Overview**: See 1-7 days of your typing activity in colorful boxes
+- ⌨️ **Keyboard Shortcuts**: Quick access with customizable hotkeys
 - 🔄 **Auto-Sync**: Configurable refresh intervals keep your data current
 - 🎯 **Zero Distraction**: Minimal, elegant interface that doesn't get in your way
 - 🔒 **Privacy First**: Your data stays local; only Monkeytype API calls are made
@@ -44,6 +55,7 @@
 | **📅 Customizable Activity Display** | Show 1-7 days of your typing activity in colorful boxes |
 | **🖱️ Interactive Popup** | Left-click to see detailed daily test counts and dates |
 | **🌐 Right-click Action** | Right-click to open Monkeytype homepage or your profile |
+| **⌨️ Keyboard Shortcuts** | Quick access to refresh, open Monkeytype, and view profile |
 | **⚡ Real-time Updates** | Automatic data synchronization with Monkeytype |
 | **🎨 12 Beautiful Themes** | From classic Monkeytype yellow to Dracula and Panda 🐼 |
 | **📍 Flexible Positioning** | Place anywhere in your panel (left, center, or right) |
@@ -100,6 +112,32 @@ gnome-extensions enable monkeybar@aroice.in
 
 ---
 
+## 📝 What's New
+
+### Version 7 - "KeyMaster" (November 2025) 🎉
+- ⌨️ **NEW**: Customizable keyboard shortcuts for quick actions
+  - Refresh Now (Super+Shift+R)
+  - Open Monkeytype (Super+Shift+M)
+  - Open User Profile (Super+Shift+P)
+- 🎯 Interactive shortcut configuration in settings
+- ⚡ System-wide hotkey support
+
+### Version 5 (November 2025)
+- 🎨 Display customization: 1-7 days to show
+- 📅 Current week view option
+- 🖱️ Configurable right-click action
+- 🎨 Improved theme system
+
+### Version 4 and Earlier
+- 🎨 12 color themes
+- 📊 Dual color modes (opacity/grade)
+- 📍 Panel positioning
+- 🔄 Auto-refresh functionality
+- 📆 Week start day customization
+- 💡 Current day highlighting
+
+---
+
 ## ⚙️ Configuration
 
 ### Quick Setup Guide
@@ -134,6 +172,23 @@ Navigate through the settings page to personalize:
 | **Highlight Today** | On/Off | Off |
 | **Show Current Week** | On/Off | Off |
 | **Right-click Action** | Open Homepage or Profile | Homepage |
+
+### ⌨️ Keyboard Shortcuts
+
+MonkeyBar includes customizable keyboard shortcuts for quick actions:
+
+| Shortcut | Default | Action |
+|----------|---------|--------|
+| **Refresh Now** | `Super+Shift+R` | Instantly refresh typing activity data |
+| **Open Monkeytype** | `Super+Shift+M` | Open Monkeytype (homepage or profile) |
+| **Open User Profile** | `Super+Shift+P` | Open your Monkeytype profile directly |
+
+**Customization:**
+- All shortcuts are fully customizable in Settings → Keyboard Shortcuts
+- Click any shortcut button and press your desired key combination
+- Must include at least one modifier key (Ctrl, Alt, Super, Shift)
+- Shortcuts work system-wide in GNOME Shell
+- Can be disabled by clearing them in settings
 
 ### 🔐 Privacy & Security
 
@@ -274,11 +329,12 @@ Contributions are welcome! Whether it's bug reports, feature requests, or code c
 - [x] ✅ Current day highlighting
 - [x] ✅ Configurable days to show (1-7 days)
 - [x] ✅ Right-click to open Monkeytype (homepage or profile)
+- [x] ✅ **Keyboard shortcuts** (v7 - KeyMaster)
 - [ ] 🔄 Customizable activity thresholds
 - [ ] 🔄 Multiple account support
 - [ ] 🔄 Monthly/yearly view options
-- [ ] 🔄 Keyboard shortcuts
 - [ ] 🔄 Achievement notifications
+- [ ] 🔄 Export activity data
 
 ...
 
@@ -439,7 +495,7 @@ See the [LICENSE](LICENSE) file for complete details.
 
 ---
 
-*Last Updated: November 11, 2025*
+*Last Updated: November 22, 2025*
 
 </div>
 
