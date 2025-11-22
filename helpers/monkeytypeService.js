@@ -72,13 +72,13 @@ export async function fetchTypingActivity(session, username, apeKey, showCurrent
 
     console.log(`Monkeytype Streak Extension: Username: ${username}, ApeKey provided: ${!!apeKey && apeKey !== 'YOUR_MONKEYTYPE_APE_KEY' && apeKey.trim() !== ''}`);
 
-    // If no ApeKey, fall back to public profile for streak data
-    if (!apeKey || apeKey === 'YOUR_MONKEYTYPE_APE_KEY' || apeKey.trim() === '') {
-        console.log('Monkeytype Streak Extension: No ApeKey provided, fetching public streak data...');
-        return await fetchPublicStreak(session, username);
-    }
-
     const targetDates = getDates(true, showCurrentWeekOnly, weekStartDay, daysToShow);
+
+    // If no ApeKey, fall back to public profile for streak data or testActivity if available
+    if (!apeKey || apeKey === 'YOUR_MONKEYTYPE_APE_KEY' || apeKey.trim() === '') {
+        console.log('Monkeytype Streak Extension: No ApeKey provided, fetching public profile data...');
+        return await fetchPublicProfile(session, username, targetDates);
+    }
 
     try {
         // First, try to get the user's profile which includes testActivity
@@ -150,12 +150,13 @@ export async function fetchTypingActivity(session, username, apeKey, showCurrent
 }
 
 /**
- * Fetch public streak data from Monkeytype API (no authentication required)
+ * Fetch public profile from Monkeytype API (no authentication required)
  * @param {Soup.Session} session - Soup session for HTTP requests
  * @param {string} username - Monkeytype username
- * @returns {Promise<Object>} Object with streak and maxStreak
+ * @param {string[]} targetDates - Array of target dates in ISO format
+ * @returns {Promise<number[]|Object>} Array of test counts for each day, or object with streak info
  */
-async function fetchPublicStreak(session, username) {
+async function fetchPublicProfile(session, username, targetDates) {
     try {
         const message = Soup.Message.new('GET', `https://api.monkeytype.com/users/${username}/profile`);
         
@@ -179,6 +180,11 @@ async function fetchPublicStreak(session, username) {
         if (!result.data) {
             console.error('Monkeytype Streak Extension: Unexpected API response structure:', result);
             throw new Error('Unexpected API response structure.');
+        }
+
+        // Check if testActivity is available in the profile
+        if (result.data.testActivity) {
+            return parseTestActivity(result.data.testActivity, targetDates);
         }
 
         const { streak, maxStreak } = result.data;
